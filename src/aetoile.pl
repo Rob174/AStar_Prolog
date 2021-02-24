@@ -52,6 +52,7 @@ Predicat principal de l'algorithme :
 
 */
 main :-
+	cleanFiles(),
 	% initialisations Pf, Pu et Q 
 	initial_state(S0), % fixer la situation de départ S0
 	% calculer les valeurs F0, H0, G0 pour cette situation
@@ -76,9 +77,9 @@ main :-
 loop_successors([],Pu,Pf,_,Pu,Pf,_).
 loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :- 
 	writef("Pu %t\n",[Pu]),cheminPu(CheminPu),cheminPf(CheminPf),cheminQ(CheminQ),
-	writeToFile(Pu,CheminPu,Num),
-	writeToFile(Pf,CheminPf,Num),
-	writeToFile(Q,CheminQ,Num),
+	writeToFileTree(Pu,CheminPu,Num),
+	writeToFileTree(Pf,CheminPf,Num),
+	writeToFileTree(Q,CheminQ,Num),
 	% write("Step loop_successors\n"),
 	S=[U1,_,TPere,TAction],
 	writeToFileTaquinTransition(TPere,TAction,U1),
