@@ -27,7 +27,8 @@ def format_array_str(array_str: str) -> np.ndarray:
 for step, line in enumerate(file):
     if line == "":
         continue
-    [array, action,arrayPere] = line.split(";")
+    print(line)
+    [arrayPere,action,array] = line.split(";")
     array =     format_array_str(array)
     arrayPere = format_array_str(arrayPere)
     Ldata.append([step,array,action,arrayPere])
@@ -38,7 +39,7 @@ for mode in ["pere","fils"]:
     fig = go.Figure()
     for [step,array,action,arrayPere] in Ldata:
         fig.add_trace(
-            go.Table(cells=dict(values=array,
+            go.Table(cells=dict(values=array if mode == "fils" else arrayPere,
                                 fill_color='white',
                                 line_color='black',
                                 align='center',
