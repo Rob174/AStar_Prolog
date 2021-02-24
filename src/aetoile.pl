@@ -65,8 +65,7 @@ main :-
 	insert([[F0,H0,G0],S0],Pf,PfInit),
 	insert([S0,[F0,H0,G0],nil,nil],Pu,PuInit),
 	% lancement de Aetoile
-	print_list(S0),
-	writef(", 'none', [['vide','vide','vide'],['vide','vide','vide'],['vide','vide','vide']]\n"),
+	writeToFileTaquinTransition([[vide,vide,vide],[vide,vide,vide],[vide,vide,vide]],none,S0),
 	aetoile(PfInit,PuInit,Q,0).
 
 
