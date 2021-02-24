@@ -1,15 +1,18 @@
-from os import name
 import plotly.graph_objects as go
-import plotly.figure_factory as ff
-import numpy as np
 import re
-import numpy as np
-from typing import List
 from pathlib import Path
-import os
+from typing import List
+
+import numpy as np
+import plotly.graph_objects as go
+
 """
 Manuel : 
-Pour afficher la succession des états empruntés par l'IA 
+Exécuter au préalable le programme aetoile de prolog
+Pour afficher chaque situation du taquin, comme on ne sait pas forcément quelle branche développe prolog avec le backtrack 
+on affichera en parallèle la matrice avant l'action et après l'action
+(Les taquins s'ouvrent tout seuls (et sont également stockée sous forme html dans le dossier out) 
+et on peut avancer dans les états avec le slider
 """
 out_path = str(Path(__file__).parent.parent.parent / "out")
 with open(out_path+"/logsTaquinTransition.txt", "r") as f:
