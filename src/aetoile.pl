@@ -130,6 +130,8 @@ expand(U, G, ListNoeudsSuccDirect):-
 		)
 	%,writef("EXPAND : %t\n",[ListNoeudsSuccDirect])
 	.
+	
+% E: état duquel on va afficher les actions pour y parvenir en remontant récursivement
 affiche_solution(Q, E) :-
 	% Extraire le noeud correspondant à l’état E
 	belongs(E, Q),
