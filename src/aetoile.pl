@@ -115,6 +115,21 @@ loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :-
 			insert([[F,H,G],U],Pf,NewPf) 
 			)
 		).
+
+
+% E: état duquel on va afficher les actions pour y parvenir en remontant récursivement
+affiche_solution(Q, E) :-
+	% Extraire le noeud correspondant à l’état E
+	belongs(E, Q),
+	% Extraire les différents éléments de la structure du noeud
+	E is [_, [_,_,_], Pere, A],
+	% Vérifier que Pere n’est pas nul (nul quand on arrive à la racine)
+	Pere \= nil,
+	% Afficher l’action correspondante à l’état actuel
+	write(A),
+	% Appliquer le prédicat sur le père de l’état actuel
+	affiche_solution(Q, Pere).
+
 /**
 	expand(+U, +G, -ListNoeudsSuccDirect)
 */
