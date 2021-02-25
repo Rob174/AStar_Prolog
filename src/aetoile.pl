@@ -52,7 +52,7 @@ Predicat principal de l'algorithme :
 
 */
 main :-
-	cleanFiles(),
+	cleanFiles,
 	% initialisations Pf, Pu et Q 
 	initial_state(S0), % fixer la situation de départ S0
 	% calculer les valeurs F0, H0, G0 pour cette situation
@@ -65,7 +65,6 @@ main :-
 	insert([[F0,H0,G0],S0],Pf,PfInit),
 	insert([S0,[F0,H0,G0],nil,nil],Pu,PuInit),
 	% lancement de Aetoile
-	writeToFileTaquinTransition([[vide,vide,vide],[vide,vide,vide],[vide,vide,vide]],none,S0),
 	aetoile(PfInit,PuInit,Q,0).
 
 

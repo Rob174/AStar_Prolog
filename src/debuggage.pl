@@ -17,13 +17,23 @@ writeToFileTree(avl(G,R,D,_H),FileName,Num):-
 	writeToFileTree(D,FileName,Num).
 
 writeToFileTaquinTransition(MPere,Action,MFille) :- 
+    (MPere = nil -> cheminTaquinTransition(FileName),open(FileName,append,Out),
+    write(Out,[[vide,vide,vide],[vide,vide,vide],[vide,vide,vide]]),write(Out,";"),
+    write(Out,none),write(Out,";"),
+    write(Out,MFille),
+    write(Out,"\n"),
+    close(Out)
+    
+    ;
+
     cheminTaquinTransition(FileName),open(FileName,append,Out),
     write(Out,MPere),write(Out,";"),
     write(Out,Action),write(Out,";"),
     write(Out,MFille),
     write(Out,"\n"),
-    close(Out)
+    close(Out))
 .
+
 writeToFileExpandResult(Result) :-
     cheminExpandResult(Chemin),open(Chemin,append,Out),
     write(Out,Result),
