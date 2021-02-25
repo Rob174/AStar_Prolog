@@ -69,10 +69,12 @@ initial_state([ [a, b, c],
    %******************
    % format :  final_state(+State) ou State est une matrice (liste de listes)
    
-final_state([[a, b,  c],
+/*final_state([[a, b,  c],
             [h,vide, d],
-            [g, f,  e]]).
-
+            [g, f,  e]]).*/
+final_state([ [a,b,c],       % C'EST L'EXEMPLE PRIS EN COURS
+               [d,e,f],       % 
+               [g,h,vide] ]).
 			 
    %********************
    % AFFICHAGE D'UN ETAT

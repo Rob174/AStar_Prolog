@@ -75,7 +75,7 @@ main :-
 
 loop_successors([],Pu,Pf,_,Pu,Pf,_).
 loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :- 
-	writef("Pu %t\n",[Pu]),cheminPu(CheminPu),cheminPf(CheminPf),cheminQ(CheminQ),
+	cheminPu(CheminPu),cheminPf(CheminPf),cheminQ(CheminQ),
 	writeToFileTree(Pu,CheminPu,Num),
 	writeToFileTree(Pf,CheminPf,Num),
 	writeToFileTree(Q,CheminQ,Num),
@@ -83,7 +83,8 @@ loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :-
 	S=[U1,_,TPere,TAction],
 	writeToFileTaquinTransition(TPere,TAction,U1),
 	belongs([U1,_,_,_], Q) -> % si S est connu dans Q alors oublier cet état (S a déjà été développé)
-	write("__________hey\n"), Num1 is Num+1,
+	%write("__________hey\n"),
+	 Num1 is Num+1,
 		loop_successors(Lsuite,Pu,Pf,Q,NewPu,NewPf,Num1)
 
 	;
@@ -92,24 +93,24 @@ loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :-
 		% si S est connu dans Pu alors garder le terme associé à la meilleure évaluation (dans Pu et dans Pf)
 		(belongs([U,[F2,H2,G2],Pere2,Action2],Pu) ->
 		(
-			write("***************looping\n"),
+			%write("***************looping\n"),
  			suppress([U,[F2,H2,G2],Pere2,Action2],Pu,NewPu),
 			(F2 =< F -> (
 				insert([U,[F2,H2,G2],Pere2,Action2],Pu,NewPu),
-			write("111***************looping\n"),
+			%write("111***************looping\n"),
 				insert([[F2,H2,G2],U],Pf,NewPf))
 			;
 				(S = [U,[F,H,G],Pere,Action],
 				insert([U,[F,H,G],Pere,Action],Pu,NewPu),
-			write("222***************looping\n"),
+			%write("222***************looping\n"),
 				insert([[F,H,G],U],Pf,NewPf))
 			)
 		)
 		;
  		(	% sinon (S est une situation nouvelle) il faut créer un nouveau terme à insérer dans Pu (idem dans Pf)	
 			S = [U,[F,H,G],Pere,Action],
-			writef("---------------looping : action : %t\n",[Action]),
-			writef("s1 %t\n",[Pu]),% NewPu = nil ?????
+			%writef("---------------looping : action : %t\n",[Action]),
+			%writef("s1 %t\n",[Pu]),% NewPu = nil ?????
 			insert([U,[F,H,G],Pere,Action],Pu,NewPu),% TODO : returns false : Pu ne doit pas être un avl
 			insert([[F,H,G],U],Pf,NewPf) 
 			)
@@ -123,9 +124,21 @@ expand(U, G, ListNoeudsSuccDirect):-
 		[S, [Fs, Hs, Gs], U, A], 
 		(rule(A,1, U, S), heuristique(S,Hs),Gs is G+1,Fs is Gs+Hs), 
 		ListNoeudsSuccDirect
-		),
-	writef("EXPAND : %t\n",[ListNoeudsSuccDirect])
+		)
+	%,writef("EXPAND : %t\n",[ListNoeudsSuccDirect])
 	.
+affiche_solution(Q, E) :-
+	% Extraire le noeud correspondant à l’état E
+	belongs(E, Q),
+	% Extraire les différents éléments de la structure du noeud
+	E = [_, [_,_,_], Pere, A],
+	% Vérifier que Pere n’est pas nul (nul quand on arrive à la racine)
+	Pere \= nil,
+	% Afficher l’action correspondante à l’état actuel
+	write(A),
+	% Appliquer le prédicat sur le père de l’état actuel
+	affiche_solution(Q, Pere).
+
 %si Pf et Pu sont vides, il n’y a aucun état pouvant être développé donc pas de solution au problème. 
 % Dans ce cas il faut afficher un message clair : « PAS de SOLUTION : L’ETAT FINAL N’EST PAS ATTEIGNABLE ! »
 aetoile([], [], _,_) :- write("PAS de SOLUTION : L’ETAT FINAL N’EST PAS ATTEIGNABLE !"). 
@@ -135,17 +148,18 @@ aetoile(Pf,Pu,Qs,Num) :- suppress_min([[_,_,_],U1],Pf,_),
 		insert([U,[F,H,G],Pere,A],Qs,NewQs),
 		affiche_solution(NewQs,U)
 					; % (cas général) sinon
-		writef("Step : %t\n",[Pf]),
+		%writef("Step : %t\n",[Pf]),
 		% on enlève le nœud de Pf correspondant à l’état U à développer (celui de valeur F minimale) et on enlève aussi  le nœud frère associé dans Pu
 		suppress_min([[F,H,G],U],Pf,NewPf),
-		write("Step1\n"),
+		%write("Step1\n"),
 		suppress_min([U,[F,H,G],Pere,A],Pu,NewPu),
 		% développement de U
 		% déterminer tous  les  nœuds  contenant  un  état successeur  S de  la  situation  U  et  calculer  leur  évaluation  [Fs,  Hs,  Gs]  (prédicat expand) connaissant Gu et le coût pour passer de U à S
-        writef("WHAT : %t %t\n",[U,G]),
+        %writef("WHAT : %t %t\n",[U,G]),
 		expand(U,G,Lsuccesseurs),
+		writeToFileExpandResult(Lsuccesseurs),
 		% traiter chaque nœud successeur  (prédicat loop_successors) :
-		writef("NIL ??? %t\n",[Pu_new]),
+		%writef("NIL ??? %t\n",[Pu_new]),
         loop_successors(Lsuccesseurs, NewPu, NewPf, Qs, Pu_new, Pf_new,Num),
 		insert([U,[F,H,G],Pere,A],Qs,NewQs),Num1 is Num+1,
 		aetoile(Pf_new, Pu_new, NewQs,Num1)

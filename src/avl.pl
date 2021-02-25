@@ -175,8 +175,8 @@ insert(Elem, nil, avl(nil,Elem,nil,0)).
 insert(Elem, AVL, NEW_AVL) :-
 	%writef("NEW AVL : %t\n",[AVL]),
 	AVL = avl(Gauche,Racine,Droite,_Hauteur), % returns false
-	write("firstStep\n"),
-	(AVL = avl(nil,Elem,nil,0) -> write("AYEYAYAYAYAYYAYAYAYA\n") ; writef("Racine : %t\n",[Elem]),true),
+	%write("firstStep\n"),
+	%(AVL = avl(nil,Elem,nil,0) -> write("AYEYAYAYAYAYYAYAYAYA\n") ; writef("Racine : %t\n",[Elem]),true),
 	(Elem = Racine -> (
 			% l'�l�ment est d�j� present, pas d'insertion possible
 			%write("fail\n"),
@@ -184,7 +184,7 @@ insert(Elem, AVL, NEW_AVL) :-
 	)
 	;
 		(Elem @< Racine ->
-			write("choice1\n"),
+			%write("choice1\n"),
 			% insertion dans le ss-arbre gauche
 			insert(Elem, Gauche, New_Gauche),
 			height(New_Gauche, New_HG),
@@ -194,7 +194,7 @@ insert(Elem, AVL, NEW_AVL) :-
 			right_balance(AVL_INT, NEW_AVL)
 		;
 	    % Elem @> Racine
-			write("choice2\n"),
+			%write("choice2\n"),
 			% insertion dans le ss-arbre droite
 			insert(Elem, Droite, New_Droite),
 			height(New_Droite, New_HD),
@@ -254,7 +254,7 @@ suppress_min(Min, AVL, NEW_AVL) :-
 	AVL = avl(Gauche,Racine,Droite, _Hauteur),
 	(Gauche = nil ->
 		Min = Racine,
-		writef("valeur2 %t\n",[Min]),
+		%writef("valeur2 %t\n",[Min]),
 		NEW_AVL = Droite
 	;
 		% Gauche \= nil

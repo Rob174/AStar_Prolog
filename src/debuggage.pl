@@ -2,6 +2,7 @@ cheminPu("../out/logsPu.txt").
 cheminPf("../out/logsPf.txt").
 cheminQ("../out/logsQ.txt").
 cheminTaquinTransition("../out/logsTaquinTransition.txt").
+cheminExpandResult("../out/logsExpandResult.txt").
 
 writeToFileTree(nil,FileName,_) :- 
 	open(FileName,append,Out),
@@ -23,9 +24,17 @@ writeToFileTaquinTransition(MPere,Action,MFille) :-
     write(Out,"\n"),
     close(Out)
 .
+writeToFileExpandResult(Result) :-
+    cheminExpandResult(Chemin),open(Chemin,append,Out),
+    write(Out,Result),
+    write(Out,"\n"),
+    close(Out)
+.
 cleanFiles():-
     cheminTaquinTransition(FileName),open(FileName,write,Out),
     close(Out),
+    cheminExpandResult(FileName1),open(FileName1,write,Out1),
+    close(Out1),
     cheminPu(FileNamePu),open(FileNamePu,write,OutPu),
     close(OutPu),
     cheminPf(FileNamePf),open(FileNamePf,write,OutPf),
