@@ -78,7 +78,7 @@ loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :-
 	%write("Step loop_successors\n"),
 	S=[U1,_,_,_],
 	belongs([U1,_,_,_], Q) -> % si S est connu dans Q alors oublier cet état (S a déjà été développé)
-		%write("__________hey\n"),
+		writef("__________hey %t\n",[Num]),
 		Num1 is Num+1,
 		loop_successors(Lsuite,Pu,Pf,Q,NewPu,NewPf,Num1)
 
@@ -94,7 +94,7 @@ loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :-
 		% si S est connu dans Pu alors garder le terme associé à la meilleure évaluation (dans Pu et dans Pf)
 		(belongs([U,[F2,H2,G2],Pere2,Action2],Pu) ->
 		(
-			%write("***************looping\n"),
+			write("***************looping %t\n",[Num]),
  			suppress([U,[F2,H2,G2],Pere2,Action2],Pu,_),
 			(F2 =< F -> (
 				insert([U,[F2,H2,G2],Pere2,Action2],Pu,NewPu),
@@ -110,7 +110,7 @@ loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :-
 		;
  		(	% sinon (S est une situation nouvelle) il faut créer un nouveau terme à insérer dans Pu (idem dans Pf)	
 			S = [U,[F,H,G],Pere,Action],
-			%writef("---------------looping : action : %t\n",[Action]),
+			writef("---------------looping : action : %t %t\n",[Num,Action]),
 			%writef("s1 %t\n",[Pu]),% NewPu = nil ?????
 			insert([U,[F,H,G],Pere,Action],Pu,NewPu),% TODO : returns false : Pu ne doit pas être un avl
 			insert([[F,H,G],U],Pf,NewPf) 
