@@ -254,7 +254,6 @@ suppress_min(Min, AVL, NEW_AVL) :-
 	AVL = avl(Gauche,Racine,Droite, _Hauteur),
 	(Gauche = nil ->
 		Min = Racine,
-		%writef("valeur2 %t\n",[Min]),
 		NEW_AVL = Droite
 	;
 		% Gauche \= nil
