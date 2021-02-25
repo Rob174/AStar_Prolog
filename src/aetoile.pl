@@ -83,7 +83,6 @@ loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :-
 		loop_successors(Lsuite,Pu,Pf,Q,NewPu,NewPf,Num1)
 
 	;
-		S=[U1,_,TPere,TAction],
 		%write("__________hey\n"),
 		S = [U,[F,_,_],_,_],
 		% si S est connu dans Pu alors garder le terme associé à la meilleure évaluation (dans Pu et dans Pf)
