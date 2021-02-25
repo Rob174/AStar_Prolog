@@ -25,7 +25,7 @@ def format_array_str(array_str: str) -> np.ndarray:
     array: List[List[str]] = eval(formatted_array_str)
     # Tourner les arrays de telle sorte à ce qu'elles soient dans le même sens que brutes
     # (ss la forme [[...],[.... ... ) lors de la visualisation :
-    array: np.ndarray =     np.flipud(np.fliplr(np.array(array).T.tolist()))
+    array: np.ndarray =     np.array(array).T.tolist()
     return array
 for step, line in enumerate(file):
     if line == "":
