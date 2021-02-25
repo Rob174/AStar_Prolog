@@ -75,26 +75,27 @@ main :-
 
 loop_successors([],Pu,Pf,_,Pu,Pf,_).
 loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :- 
-	cheminPu(CheminPu),cheminPf(CheminPf),cheminQ(CheminQ),
-	writeToFileTree(Pu,CheminPu,Num),
-	writeToFileTree(Pf,CheminPf,Num),
-	writeToFileTree(Q,CheminQ,Num),
-	% write("Step loop_successors\n"),
-	S=[U1,_,TPere,TAction],
-	writeToFileTaquinTransition(TPere,TAction,U1),
+	%write("Step loop_successors\n"),
+	S=[U1,_,_,_],
 	belongs([U1,_,_,_], Q) -> % si S est connu dans Q alors oublier cet état (S a déjà été développé)
-	%write("__________hey\n"),
-	 Num1 is Num+1,
+		%write("__________hey\n"),
+		Num1 is Num+1,
 		loop_successors(Lsuite,Pu,Pf,Q,NewPu,NewPf,Num1)
 
 	;
-
+		S=[U1,_,TPere,TAction],
+		cheminPu(CheminPu),cheminPf(CheminPf),cheminQ(CheminQ),
+		writeToFileTree(Pu,CheminPu,Num),
+		writeToFileTree(Pf,CheminPf,Num),
+		writeToFileTree(Q,CheminQ,Num),
+		writeToFileTaquinTransition(TPere,TAction,U1),
+		%write("__________hey\n"),
 		S = [U,[F,_,_],_,_],
 		% si S est connu dans Pu alors garder le terme associé à la meilleure évaluation (dans Pu et dans Pf)
 		(belongs([U,[F2,H2,G2],Pere2,Action2],Pu) ->
 		(
 			%write("***************looping\n"),
- 			suppress([U,[F2,H2,G2],Pere2,Action2],Pu,NewPu),
+ 			suppress([U,[F2,H2,G2],Pere2,Action2],Pu,_),
 			(F2 =< F -> (
 				insert([U,[F2,H2,G2],Pere2,Action2],Pu,NewPu),
 			%write("111***************looping\n"),
@@ -113,6 +114,7 @@ loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :-
 			%writef("s1 %t\n",[Pu]),% NewPu = nil ?????
 			insert([U,[F,H,G],Pere,Action],Pu,NewPu),% TODO : returns false : Pu ne doit pas être un avl
 			insert([[F,H,G],U],Pf,NewPf) 
+
 			)
 		).
 
