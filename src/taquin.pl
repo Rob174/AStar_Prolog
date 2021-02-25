@@ -36,8 +36,11 @@ Les autres prédicats sont spécifiques au Taquin.
 initial_state([ [b, h, c],       % C'EST L'EXEMPLE PRIS EN COURS
                 [a, f, d],       % 
                 [g,vide,e] ]).   % h1=4,   h2=5,   f*=5
+                
 
-
+/*initial_state([ [a,b,c],       % C'EST L'EXEMPLE PRIS EN COURS
+               [d,e,f],       % 
+               [g,h,vide] ]).*/
 
 % AUTRES EXEMPLES POUR LES TESTS DE  A*
 
@@ -73,8 +76,8 @@ initial_state([ [a, b, c],
             [h,vide, d],
             [g, f,  e]]).*/
 final_state([ [a,b,c],       % C'EST L'EXEMPLE PRIS EN COURS
-               [d,e,f],       % 
-               [g,h,vide] ]).
+               [h,vide,d],       % 
+               [g,f,e] ]).
 			 
    %********************
    % AFFICHAGE D'UN ETAT
@@ -179,8 +182,8 @@ delete(N,X,[Y|L], [Y|R]) :-
    %*************
    
 heuristique(U,H) :-
-    heuristique1(U, H).  % au debut on utilise l'heuristique 1 
-%   heuristique2(U, H).  % ensuite utilisez plutot l'heuristique 2  
+   heuristique1(U, H).  % au debut on utilise l'heuristique 1 
+   %heuristique2(U, H).  % ensuite utilisez plutot l'heuristique 2  
    
    
    %****************

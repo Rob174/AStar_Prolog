@@ -173,7 +173,6 @@ left_rotate(avl(G,R,D,_), A_Apres) :-
 
 insert(Elem, nil, avl(nil,Elem,nil,0)).
 insert(Elem, AVL, NEW_AVL) :-
-	%writef("NEW AVL : %t\n",[AVL]),
 	AVL = avl(Gauche,Racine,Droite,_Hauteur), % returns false
 	%write("firstStep\n"),
 	%(AVL = avl(nil,Elem,nil,0) -> write("AYEYAYAYAYAYYAYAYAYA\n") ; writef("Racine : %t\n",[Elem]),true),
