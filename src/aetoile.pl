@@ -97,23 +97,25 @@ loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :-
 			write("***************looping %t\n",[Num]),
  			suppress([U,[F2,H2,G2],Pere2,Action2],Pu,_),
 			(F2 =< F -> (
-				insert([U,[F2,H2,G2],Pere2,Action2],Pu,NewPu),
+				insert([U,[F2,H2,G2],Pere2,Action2],Pu,NewPu1),
 			%write("111***************looping\n"),
-				insert([[F2,H2,G2],U],Pf,NewPf))
+				insert([[F2,H2,G2],U],Pf,NewPf1)),
+				loop_successors(Lsuite,NewPu1,NewPf1,Q,NewPu,NewPf,Num)
 			;
 				(S = [U,[F,H,G],Pere,Action],
-				insert([U,[F,H,G],Pere,Action],Pu,NewPu),
+				insert([U,[F,H,G],Pere,Action],Pu,NewPu1),
 			%write("222***************looping\n"),
-				insert([[F,H,G],U],Pf,NewPf))
+				insert([[F,H,G],U],Pf,NewPf1)),
+				loop_successors(Lsuite,NewPu1,NewPf1,Q,NewPu,NewPf,Num)
 			)
 		)
 		;
  		(	% sinon (S est une situation nouvelle) il faut créer un nouveau terme à insérer dans Pu (idem dans Pf)	
 			S = [U,[F,H,G],Pere,Action],
 			writef("---------------looping : action : %t %t\n",[Num,Action]),
-			%writef("s1 %t\n",[Pu]),% NewPu = nil ?????
-			insert([U,[F,H,G],Pere,Action],Pu,NewPu),% TODO : returns false : Pu ne doit pas être un avl
-			insert([[F,H,G],U],Pf,NewPf) 
+			insert([U,[F,H,G],Pere,Action],Pu,NewPu1),% TODO : returns false : Pu ne doit pas être un avl
+			insert([[F,H,G],U],Pf,NewPf1) ,
+			loop_successors(Lsuite,NewPu1,NewPf1,Q,NewPu,NewPf,Num)
 
 			)
 		).
