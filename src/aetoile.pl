@@ -84,11 +84,6 @@ loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :-
 
 	;
 		S=[U1,_,TPere,TAction],
-		cheminPu(CheminPu),cheminPf(CheminPf),cheminQ(CheminQ),
-		writeToFileTree(Pu,CheminPu,Num),
-		writeToFileTree(Pf,CheminPf,Num),
-		writeToFileTree(Q,CheminQ,Num),
-		writeToFileTaquinTransition(TPere,TAction,U1),
 		%write("__________hey\n"),
 		S = [U,[F,_,_],_,_],
 		% si S est connu dans Pu alors garder le terme associé à la meilleure évaluation (dans Pu et dans Pf)
@@ -165,6 +160,11 @@ aetoile(Pf,Pu,Qs,Num) :- suppress_min([[_,_,_],U1],Pf,_),
 		% développement de U
 		% déterminer tous  les  nœuds  contenant  un  état successeur  S de  la  situation  U  et  calculer  leur  évaluation  [Fs,  Hs,  Gs]  (prédicat expand) connaissant Gu et le coût pour passer de U à S
         %writef("WHAT : %t %t\n",[U,G]),
+		cheminPu(CheminPu),cheminPf(CheminPf),cheminQ(CheminQ),
+		writeToFileTree(Pu,CheminPu,Num),
+		writeToFileTree(Pf,CheminPf,Num),
+		writeToFileTree(Qs,CheminQ,Num),
+		writeToFileTaquinTransition(Pere,A,U),
 		expand(U,G,Lsuccesseurs),
 		writeToFileExpandResult(Lsuccesseurs),
 		% traiter chaque nœud successeur  (prédicat loop_successors) :
