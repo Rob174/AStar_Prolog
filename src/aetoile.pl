@@ -74,12 +74,9 @@ main :-
 
 loop_successors([],Pu,Pf,_,Pu,Pf,_).
 loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :- 
-	%write("Step loop_successors\n"),
 	S=[U1,_,_,_],
-	%writef("///////////Action : %t\n",[Act]),
 	belongs([U1,_,_,_], Q) -> % si S est connu dans Q alors oublier cet état (S a déjà été développé)
 		S=[_,_,_,_],
-		%writef("____________ Appel %t Etat déjà connu ds Q %t\n",[Num, A]),
 		Num1 is Num+1,
 		loop_successors(Lsuite,Pu,Pf,Q,NewPu,NewPf,Num1)
 	;
@@ -87,12 +84,9 @@ loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :-
 		% si S est connu dans Pu alors garder le terme associé à la meilleure évaluation (dans Pu et dans Pf)
 		(belongs([U,[F2,H2,G2],Pere2,Action2],Pu) ->
 		(
-			%writef("************ Déjà connu dans Pu %t %t\n",[Num,U]),
 			(F2 =< F -> (
-				%writef("111***************looping %t\n"),
 				loop_successors(Lsuite,Pu,Pf,Q,NewPu,NewPf,Num) )
 			; (
-				%write("222***************looping\n"),
 				S = [U,[F,H,G],Pere,Action],
 				suppress([U,[F2,H2,G2],Pere2,Action2],Pu,NewPu1),
 				suppress([[F2,H2,G2],U],Pf,NewPf1),
@@ -106,11 +100,9 @@ loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :-
 		;
  		(	% sinon (S est une situation nouvelle) il faut créer un nouveau terme à insérer dans Pu (idem dans Pf)	
 			S = [U,[F,H,G],Pere,Action],
-			%writef("---------------Situation nouvelle : action : %t %t\n",[Num,Action]),
 			insert([U,[F,H,G],Pere,Action],Pu,NewPu1),% TODO : returns false : Pu ne doit pas être un avl
 			insert([[F,H,G],U],Pf,NewPf1) ,
 			loop_successors(Lsuite,NewPu1,NewPf1,Q,NewPu,NewPf,Num)
-
 			)
 		).
 
@@ -126,15 +118,12 @@ expand(U, G, ListNoeudsSuccDirect):-
 		(rule(A,1, U, S), heuristique(S,Hs),Gs is G+1,Fs is Gs+Hs), 
 		ListNoeudsSuccDirect
 		)
-	%,writef("EXPAND : %t\n",[ListNoeudsSuccDirect])
 	.
 affiche_solution(_, [_,[_,_,_],nil,nil]) :- write("init\n").
 % E: état duquel on va afficher les actions pour y parvenir en remontant récursivement
 affiche_solution(Q, E) :-
-	writef("CALLING : %t\n",[Q]),
 	% Extraire le noeud correspondant à l’état E
 	belongs(E, Q),
-	write("CALLING1\n"),
 	% Extraire les différents éléments de la structure du noeud
 	E = [_, [_,_,_], Pere, A],
 	% Afficher l’action correspondante à l’état actuel

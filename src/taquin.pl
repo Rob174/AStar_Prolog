@@ -35,10 +35,10 @@ Les autres prédicats sont spécifiques au Taquin.
 
 initial_state([ [b, h, c],       % C'EST L'EXEMPLE PRIS EN COURS
                 [a, f, d],       % 
-                [g,vide,e] ]).   % h1=4,   h2=5,   f*=5
+                [g,vide,e] ]).   % h1=4,   h2=5,   f=5
                 
 
-/*initial_state([ [a,b,c],       % C'EST L'EXEMPLE PRIS EN COURS
+/*initial_state([ [a,b,c],    % C'EST L'EXEMPLE PRIS EN COURS
                [d,e,f],       % 
                [g,h,vide] ]).*/
 

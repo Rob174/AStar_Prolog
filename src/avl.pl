@@ -79,6 +79,12 @@ put_flat(avl(G,R,D,_H)) :-
 	nl, write(R), 
 	put_flat(D).
 
+put_flat_liste(nil,[]).
+put_flat_liste(avl(G,R,D,_H),[R|L]) :-
+	put_flat_liste(G,L1),
+	put_flat_liste(D,L2),
+	append(L1,L2,L).
+
 	%----------------------------
 	% Affichage (couch�) d'un AVL
 	%----------------------------
