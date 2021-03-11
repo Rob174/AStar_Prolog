@@ -49,13 +49,17 @@ testExpand :-
 .
 
 testLoop_successors :-
+
+    write("00000000000\n"),
     % test avec un état possible
     S0 = [[a,b,c],
                 [d,vide,f],
                 [g,h,e]],
     G0 is 0, 
 	heuristique1(S0,H0),
+    write("111111111\n"),
 	F0 is H0,
+    write("22222222\n"),
 	% créer 3 AVL Pf, Pu et Q initialement vides
 	empty(Pf),empty(Pu),empty(Q),
 	% insérer un noeud [ [F0,H0,G0], S0 ]dans Pf  et un noeud[S0, [F0,H0,G0], nil, nil]dans Pu
@@ -66,5 +70,26 @@ testLoop_successors :-
     expand(U,0,Lsuccesseurs),
     loop_successors(Lsuccesseurs,NewPu,NewPf,Q,PuEnd,PfEnd,0),
     put_flat_liste(PuEnd,Liste1),
-    put_flat_liste(PuEnd,Liste2)
+    put_flat_liste(PfEnd,Liste2),
+    
+    Liste2 = [
+
+                [[4,3,1],[[a,b,c],
+                [vide,d,f],
+                [g,h,e]]],% d, f, h mal placées
+
+
+                [[4,3,1],[[a,b,c],
+                [d,h,f],
+                [g,vide,e]]],% d, f, h mal placées
+
+
+                [[4,3,1],[[a,b,c],
+                [d,f,vide],
+                [g,h,e]]], % d, f, h mal placées
+
+                [[5,4,1],[[a,vide,c],
+                [d,b,f],
+                [g,h,e]]] % b, d, f, h mal placées
+            ],
 .
