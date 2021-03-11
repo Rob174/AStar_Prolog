@@ -2,9 +2,21 @@
 :- [aetoile].
 :- [avl].
 
-testHeuristique1Fin :-
+testHeuristique1 :-
     final_state(F),
-    heuristique1(F,H),H = 0
+    heuristique1(F,H),H = 0,
+    heuristique1([[a,vide,c],
+                [d,b,f],
+                [g,h,e]],4),
+    heuristique1([[a,b,c],
+                [d,h,f],
+                [g,vide,e]],3),
+    heuristique1([[a,b,c],
+                [vide,d,f],
+                [g,h,e]],3),
+    heuristique1([[a,b,c],
+                [d,f,vide],
+                [g,h,e]],3)
 .
 testHeuristique2 :-
     final_state(F),

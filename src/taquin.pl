@@ -182,8 +182,8 @@ delete(N,X,[Y|L], [Y|R]) :-
    %*************
    
 heuristique(U,H) :-
-   %heuristique1(U, H).  % au debut on utilise l'heuristique 1 
-   heuristique2(U, H).  % ensuite utilisez plutot l'heuristique 2  
+   heuristique1(U, H).  % au debut on utilise l'heuristique 1 
+   %heuristique2(U, H).  % ensuite utilisez plutot l'heuristique 2  
    
    
    %****************
@@ -265,6 +265,4 @@ distance_manhattan(P, U, F, D) :- coordonnees([L1,C1],U,P),coordonnees([L2,C2],F
 heuristique2(U, H) :-
 	final_state(F),
 	findall(D, (piece(U,P),distance_manhattan(P, U, F, D)), ListeDistances),
-	findall([P,D], (piece(U,P),distance_manhattan(P, U, F, D)), ListeDistances2),
-   writef("d : %t\n",[ListeDistances2]),
 	sumlist(ListeDistances, H).

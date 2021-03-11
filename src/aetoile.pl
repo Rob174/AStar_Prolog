@@ -113,25 +113,24 @@ loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :-
 */
 expand(U, G, ListNoeudsSuccDirect):-
 	% Trouver tous les S, successeurs directs de l’état U (donc en 1 coup)
-	write("EXPAND\n"),
 	findall(
 		[S, [Fs, Hs, Gs], U, A], 
 		(rule(A,1, U, S), heuristique(S,Hs),Gs is G+1,Fs is Gs+Hs), 
 		ListNoeudsSuccDirect
 		)
 	.
-affiche_solution(_, [_,[_,_,_],nil,nil]) :- write("init\n").
+affiche_solution(_, [_,[_,_,_],nil,nil]) :- true.
 % E: état duquel on va afficher les actions pour y parvenir en remontant récursivement
 affiche_solution(Q, E) :-
 	% Extraire le noeud correspondant à l’état E
-	belongs(E, Q),
+	belongs([E, [_,_,_], Pere, _], Q),
+	suppress([E,_,Pere,A],Q,NewQ),
 	% Extraire les différents éléments de la structure du noeud
-	E = [_, [_,_,_], Pere, A],
 	% Afficher l’action correspondante à l’état actuel
 	write(A),write("\n"),
 	% Vérifier que Pere n’est pas nul (nul quand on arrive à la racine)
 	% Appliquer le prédicat sur le père de l’état actuel
-	affiche_solution(Q, Pere).
+	affiche_solution(NewQ, Pere),write("----------------------------\n").
 
 %si Pf et Pu sont vides, il n’y a aucun état pouvant être développé donc pas de solution au problème. 
 % Dans ce cas il faut afficher un message clair : « PAS de SOLUTION : L’ETAT FINAL N’EST PAS ATTEIGNABLE ! »
@@ -139,29 +138,26 @@ aetoile([], [], _,_) :- write("PAS de SOLUTION : L’ETAT FINAL N’EST PAS ATTE
 aetoile(Pf,Pu,Qs,Num) :- 
 	suppress_min([[_,_,_],U1],Pf,_),
 	final_state(U1)  -> % si le nœud de valeur F minimum de Pf correspond à la situation terminale, alors on a trouvé une solution et on peut l’afficher (prédicat affiche_solution)
-		suppress_min([U,[F,H,G],Pere,A],Pu,PuFin),
+		suppress_min([U,[F,H,G],Pere,A],Pu,_PuFin),
 		insert([U,[F,H,G],Pere,A],Qs,NewQs),
-		cheminPu(CheminPu),cheminPf(CheminPf),cheminQ(CheminQ),
+		/*cheminPu(CheminPu),cheminPf(CheminPf),cheminQ(CheminQ),
 		writeToFileTree(PuFin,CheminPu,Num),
 		writeToFileTree(Pf,CheminPf,Num),
 		writeToFileTree(NewQs,CheminQ,Num),
-		writeToFileTaquinTransition(Pere,A,U),
+		writeToFileTaquinTransition(Pere,A,U),*/
 		write("SUCCES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"),
-		affiche_solution(NewQs,[U,[F,H,G],Pere,A])
+		affiche_solution(NewQs,U)
 					; % (cas général) sinon
-		%writef("Step : %t\n",[Pf]),
 		% on enlève le nœud de Pf correspondant à l’état U à développer (celui de valeur F minimale) et on enlève aussi  le nœud frère associé dans Pu
 		suppress_min([[F,H,G],U],Pf,NewPf),
-		%write("Step1\n"),
 		suppress([U,[F,H,G],Pere1,A],Pu,NewPu),
 		% développement de U
 		% déterminer tous  les  nœuds  contenant  un  état successeur  S de  la  situation  U  et  calculer  leur  évaluation  [Fs,  Hs,  Gs]  (prédicat expand) connaissant Gu et le coût pour passer de U à S
-        write("--------------------------------------------------------------------\n"),
-		cheminPu(CheminPu),cheminPf(CheminPf),cheminQ(CheminQ),
+		/*cheminPu(CheminPu),cheminPf(CheminPf),cheminQ(CheminQ),
 		writeToFileTree(Pu,CheminPu,Num),
 		writeToFileTree(Pf,CheminPf,Num),
 		writeToFileTree(Qs,CheminQ,Num),
-		writeToFileTaquinTransition(Pere1,A,U),
+		writeToFileTaquinTransition(Pere1,A,U),*/
 		expand(U,G,Lsuccesseurs),
 		writeToFileExpandResult(Lsuccesseurs),
 		% traiter chaque nœud successeur  (prédicat loop_successors) :

@@ -56,3 +56,4 @@ cleanFiles():-
 .
 
 print_list([[A,B,C],[D,E,F],[G,H,I]]) :- writef("[['%t','%t','%t'],['%t','%t','%t'],['%t','%t','%t']]",[A,B,C,D,E,F,G,H,I]).
+
