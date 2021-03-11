@@ -100,7 +100,7 @@ loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :-
 		;
  		(	% sinon (S est une situation nouvelle) il faut créer un nouveau terme à insérer dans Pu (idem dans Pf)	
 			S = [U,[F,H,G],Pere,Action],
-			insert([U,[F,H,G],Pere,Action],Pu,NewPu1),% TODO : returns false : Pu ne doit pas être un avl
+			insert([U,[F,H,G],Pere,Action],Pu,NewPu1),
 			insert([[F,H,G],U],Pf,NewPf1) ,
 			loop_successors(Lsuite,NewPu1,NewPf1,Q,NewPu,NewPf,Num)
 			)
@@ -113,6 +113,7 @@ loop_successors([S|Lsuite],Pu,Pf,Q,NewPu,NewPf,Num) :-
 */
 expand(U, G, ListNoeudsSuccDirect):-
 	% Trouver tous les S, successeurs directs de l’état U (donc en 1 coup)
+	write("EXPAND\n"),
 	findall(
 		[S, [Fs, Hs, Gs], U, A], 
 		(rule(A,1, U, S), heuristique(S,Hs),Gs is G+1,Fs is Gs+Hs), 
