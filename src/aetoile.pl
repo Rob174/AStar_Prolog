@@ -119,7 +119,7 @@ expand(U, G, ListNoeudsSuccDirect):-
 		ListNoeudsSuccDirect
 		)
 	.
-affiche_solution(_, [_,[_,_,_],nil,nil]) :- true.
+affiche_solution(_, nil) :- write("ok\n").
 % E: état duquel on va afficher les actions pour y parvenir en remontant récursivement
 affiche_solution(Q, E) :-
 	% Extraire le noeud correspondant à l’état E
@@ -127,10 +127,20 @@ affiche_solution(Q, E) :-
 	suppress([E,_,Pere,A],Q,NewQ),
 	% Extraire les différents éléments de la structure du noeud
 	% Afficher l’action correspondante à l’état actuel
-	write(A),write("\n"),
+	write(A),write(" ; "),write(E),write("\n"),
 	% Vérifier que Pere n’est pas nul (nul quand on arrive à la racine)
 	% Appliquer le prédicat sur le père de l’état actuel
-	affiche_solution(NewQ, Pere),write("----------------------------\n").
+	affiche_solution(NewQ, Pere).
+longueurChaine(_,nil,Li,Li).
+longueurChaine(Q,U,Li,Lo) :-
+	% Extraire le noeud correspondant à l’état E
+	belongs([U, [_,_,_], Pere, _], Q),
+	suppress([U,_,Pere,_],Q,NewQ),
+	Liact is Li+1,
+	% Appliquer le prédicat sur le père de l’état actuel
+	longueurChaine(NewQ, Pere,Liact,Lo)
+.
+
 
 %si Pf et Pu sont vides, il n’y a aucun état pouvant être développé donc pas de solution au problème. 
 % Dans ce cas il faut afficher un message clair : « PAS de SOLUTION : L’ETAT FINAL N’EST PAS ATTEIGNABLE ! »
@@ -138,15 +148,15 @@ aetoile([], [], _,_) :- write("PAS de SOLUTION : L’ETAT FINAL N’EST PAS ATTE
 aetoile(Pf,Pu,Qs,Num) :- 
 	suppress_min([[_,_,_],U1],Pf,_),
 	final_state(U1)  -> % si le nœud de valeur F minimum de Pf correspond à la situation terminale, alors on a trouvé une solution et on peut l’afficher (prédicat affiche_solution)
-		suppress_min([U,[F,H,G],Pere,A],Pu,_PuFin),
-		insert([U,[F,H,G],Pere,A],Qs,NewQs),
+		suppress([U1,[F,H,G],Pere,A],Pu,_PuFin),
+		insert([U1,[F,H,G],Pere,A],Qs,NewQs),
 		/*cheminPu(CheminPu),cheminPf(CheminPf),cheminQ(CheminQ),
 		writeToFileTree(PuFin,CheminPu,Num),
 		writeToFileTree(Pf,CheminPf,Num),
 		writeToFileTree(NewQs,CheminQ,Num),
 		writeToFileTaquinTransition(Pere,A,U),*/
 		write("SUCCES !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"),
-		affiche_solution(NewQs,U)
+		affiche_solution(NewQs,U1),longueurChaine(NewQs,U1,0,Lo), Locorrected is Lo-1,writef("Longueur : %t\n",[Locorrected])
 					; % (cas général) sinon
 		% on enlève le nœud de Pf correspondant à l’état U à développer (celui de valeur F minimale) et on enlève aussi  le nœud frère associé dans Pu
 		suppress_min([[F,H,G],U],Pf,NewPf),

@@ -41,6 +41,7 @@ writeToFileExpandResult(Result) :-
     close(Out)
 .
 cleanFiles():-
+    open("../out/performances.txt",write,Out0),write(Out0,""),close(Out0),
     cheminTaquinTransition(FileName),open(FileName,write,Out),
     write(Out,""),
     close(Out),
