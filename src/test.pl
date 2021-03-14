@@ -7,16 +7,16 @@ testHeuristique1 :-
     heuristique1(F,H),H = 0,
     heuristique1([[a,vide,c],
                 [d,b,f],
-                [g,h,e]],4),
+                [g,h,e]],4),% b, d, f, h mal placées
     heuristique1([[a,b,c],
                 [d,h,f],
-                [g,vide,e]],3),
+                [g,vide,e]],3),% d, f, h mal placées
     heuristique1([[a,b,c],
                 [vide,d,f],
-                [g,h,e]],3),
+                [g,h,e]],3),% d, f, h mal placées
     heuristique1([[a,b,c],
                 [d,f,vide],
-                [g,h,e]],3)
+                [g,h,e]],3)% d, f, h mal placées
 .
 testHeuristique2 :-
     final_state(F),
@@ -24,18 +24,17 @@ testHeuristique2 :-
     heuristique2([[a,vide,c],% b (échanger avec vide), d (échanger avec b puis f), f (échanger avec e puis h ou b puis h), h (échanger avec g puis d ou b puis d) mal placées = 1 + 2 + 2 + 2 = 7
                 [d,b,f],
                 [g,h,e]],7),
-    heuristique2([[a,b,c],
+    heuristique2([[a,b,c],% d (échange avec h puis f) ; f (échange avec h puis vide) ; h (échange avec d) : 2+2+1=5
                 [d,h,f],
                 [g,vide,e]],5),
-    heuristique2([[a,b,c],
+    heuristique2([[a,b,c],% d (échange avec f) ; f (échange avec d/e puis avec h) ; h (échange avec d/g puis vide) : 1+2+2 = 5
                 [vide,d,f],
                 [g,h,e]],5),
     heuristique2([[a,b,c],
                 [d,f,vide],
-                [g,h,e]],5)
+                [g,h,e]],5) % d (échange avec f puis vide) ; f (échange avec h) ; h (échange avec f/g puis d) : 2+1+2=5
 .
 testExpand :-
-    % test 1
     Minit = [[a,b,c],
                 [d,vide,f],
                 [g,h,e]],
